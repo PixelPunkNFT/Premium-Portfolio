@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import { revalidatePath } from 'next/cache';
 import dbConnect from '@/lib/mongodb';
 import Category from '@/models/Category';
 import Product from '@/models/Product';
@@ -19,6 +20,9 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     if (!category) {
       return NextResponse.json({ error: 'Category not found' }, { status: 404 });
     }
+
+    // Revalidate landing page to show updated data
+    revalidatePath('/');
 
     return NextResponse.json(category);
   } catch (error) {
@@ -43,6 +47,9 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     if (!category) {
       return NextResponse.json({ error: 'Category not found' }, { status: 404 });
     }
+
+    // Revalidate landing page to show updated data
+    revalidatePath('/');
 
     return NextResponse.json({ message: 'Category deleted successfully' });
   } catch (error) {

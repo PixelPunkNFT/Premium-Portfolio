@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import { revalidatePath } from 'next/cache';
 import dbConnect from '@/lib/mongodb';
 import Product from '@/models/Product';
 
@@ -18,6 +19,9 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     if (!product) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
+
+    // Revalidate landing page to show updated product
+    revalidatePath('/');
 
     return NextResponse.json(product);
   } catch (error) {
@@ -38,6 +42,9 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     if (!product) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
+
+    // Revalidate landing page to show updated data
+    revalidatePath('/');
 
     return NextResponse.json({ message: 'Product deleted successfully' });
   } catch (error) {

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import { revalidatePath } from 'next/cache';
 import dbConnect from '@/lib/mongodb';
 import Category from '@/models/Category';
 
@@ -31,6 +32,9 @@ export async function POST(request: NextRequest) {
       ...body,
       sortOrder,
     });
+
+    // Revalidate landing page to show new category
+    revalidatePath('/');
 
     return NextResponse.json(category, { status: 201 });
   } catch (error) {

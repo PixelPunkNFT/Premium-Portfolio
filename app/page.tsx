@@ -6,6 +6,9 @@ import LandingSettings from '@/models/LandingSettings';
 import Category from '@/models/Category';
 import Product from '@/models/Product';
 
+// Revalidate every 10 seconds to show fresh data
+export const revalidate = 10;
+
 async function getPageData() {
   await dbConnect();
   
