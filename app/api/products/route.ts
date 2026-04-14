@@ -38,6 +38,9 @@ export async function POST(request: NextRequest) {
       sortOrder,
     });
 
+    const { revalidatePath } = await import('next/cache');
+    revalidatePath('/');
+
     return NextResponse.json(product, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to create product' }, { status: 500 });

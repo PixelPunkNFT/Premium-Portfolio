@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import { revalidatePath } from 'next/cache';
 import dbConnect from '@/lib/mongodb';
 import LandingSettings from '@/models/LandingSettings';
 
@@ -42,6 +43,9 @@ export async function PUT(request: NextRequest) {
     } else {
       settings = await LandingSettings.findByIdAndUpdate(settings._id, body, { new: true });
     }
+
+    // Revalidate landing page to show updated settings
+    revalidatePath('/');
 
     return NextResponse.json(settings);
   } catch (error) {
