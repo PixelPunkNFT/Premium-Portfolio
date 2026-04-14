@@ -21,7 +21,10 @@ export default async function AdminLayout({
       <div className="flex min-h-screen bg-black">
         <AdminSidebar />
         <div className="flex-1 overflow-auto">
-          {children}
+          {/* Add padding on mobile to prevent content hiding behind hamburger button */}
+          <div className="lg:p-0 pt-16 lg:pt-0">
+            {children}
+          </div>
         </div>
       </div>
     </Providers>
