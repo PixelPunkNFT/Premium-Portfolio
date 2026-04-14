@@ -66,15 +66,38 @@ export const authOptions: NextAuthOptions = {
       }
       return false;
     },
-    async session({ session, token }) {
-      if (session?.user) {
-        await dbConnect();
-        const dbUser = await User.findOne({ email: session.user.email });
-        if (dbUser) {
-          session.user.id = dbUser._id.toString();
-          session.user.role = dbUser.role;
-        }
+    async jwt({ token, user, account }) {
+      // Debug logging
+      console.log('=== JWT CALLBACK ===');
+      console.log('Token:', token);
+      console.log('User:', user);
+      console.log('Account:', account);
+      
+      if (user) {
+        token.email = user.email;
+        token.name = user.name;
+        token.role = 'admin';
+        console.log('✅ JWT created with user data');
       }
+      
+      console.log('Final token:', token);
+      console.log('==================');
+      return token;
+    },
+    async session({ session, token }) {
+      console.log('=== SESSION CALLBACK ===');
+      console.log('Session:', session);
+      console.log('Token:', token);
+      
+      if (session?.user && token) {
+        session.user.email = token.email as string;
+        session.user.name = token.name as string;
+        session.user.role = 'admin';
+        console.log('✅ Session populated from token');
+      }
+      
+      console.log('Final session:', session);
+      console.log('======================');
       return session;
     },
   },
