@@ -17,14 +17,34 @@ export const authOptions: NextAuthOptions = {
         
         // Check if user email is admin
         const adminEmail = process.env.ADMIN_EMAIL;
+        
+        // Debug logging
+        console.log('=== SIGNIN DEBUG START ===');
+        console.log('User email:', user.email);
+        console.log('User email type:', typeof user.email);
+        console.log('User email length:', user.email?.length);
+        console.log('Admin email:', adminEmail);
+        console.log('Admin email type:', typeof adminEmail);
+        console.log('Admin email length:', adminEmail?.length);
+        console.log('Emails match:', user.email === adminEmail);
+        console.log('User email trimmed:', user.email?.trim());
+        console.log('Admin email trimmed:', adminEmail?.trim());
+        console.log('=========================');
+        
         if (user.email !== adminEmail) {
+          console.error('❌ Access denied: Email mismatch');
+          console.error('Expected:', adminEmail);
+          console.error('Received:', user.email);
           return false; // Only admin can sign in
         }
+
+        console.log('✅ Email check passed, saving user...');
 
         try {
           const existingUser = await User.findOne({ email: user.email });
 
           if (!existingUser) {
+            console.log('Creating new user in database...');
             await User.create({
               email: user.email,
               name: user.name,
@@ -32,11 +52,15 @@ export const authOptions: NextAuthOptions = {
               image: user.image,
               role: 'admin',
             });
+            console.log('✅ User created successfully');
+          } else {
+            console.log('✅ User already exists');
           }
 
+          console.log('✅ SignIn successful');
           return true;
         } catch (error) {
-          console.error('Error saving user:', error);
+          console.error('❌ Error saving user:', error);
           return false;
         }
       }
