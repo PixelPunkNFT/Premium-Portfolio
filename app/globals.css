@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #000000;
+  color: #ffffff;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Smooth transitions */
+* {
+  transition: all 0.2s ease;
+}
+
+/* Premium button styles */
+.btn-premium {
+  @apply px-6 py-3 bg-gradient-to-r from-gold to-gold-light text-black font-semibold rounded-lg shadow-premium hover:shadow-premium-hover transform hover:scale-105 transition-all duration-300;
+}
+
+.btn-secondary {
+  @apply px-6 py-3 bg-white/10 backdrop-blur-sm text-white font-medium rounded-lg border border-white/20 hover:bg-white/20 hover:border-gold transition-all duration-300;
+}
+
+/* Card premium styles */
+.card-premium {
+  @apply bg-gradient-to-br from-zinc-900/50 to-zinc-800/30 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-premium hover:shadow-premium-hover hover:border-gold/50 transition-all duration-300;
+}
