@@ -63,13 +63,24 @@ export default function SettingsPage() {
     e.preventDefault();
 
     try {
-      await fetch('/api/settings', {
-        method: 'PUT',
+      const res = await fetch('/api/settings', {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
+      
+      if (!res.ok) {
+        throw new Error('Failed to save');
+      }
+      
+      const updated = await res.json();
+      console.log('Settings saved:', updated);
       toast.success('Settings updated!');
+      
+      // Reload settings to confirm save
+      await fetchSettings();
     } catch (error) {
+      console.error('Save error:', error);
       toast.error('Failed to update settings');
     }
   };
